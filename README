@@ -1,5 +1,5 @@
-## Open GIS
-<a href="http://www.bryangoodrich.com/projects/open-gis/">Project Homepage</a>
+Open GIS
+Homepage: http://www.bryangoodrich.com/projects/open-gis/
 
 This project aims to create a usable GIS that is automated in its data importing and in setting up the geometry. The data sources come from a variety of sites, but the primary topic for this project will be the Sacramento city police crime extracts. To support the GIS in its abstraction and analysis, a number of shapefiles will also be included. As time permits, raster layers will form the basemap and also be maintained by the local spatial database. 
 
@@ -12,7 +12,8 @@ The tools for this project will all be open-source and include
 The data stores will include
 
 > Crime Extracts  -- ZIP archives cached from web repositories
-> Police Stations -- web scraped from the SacPD website and geocoded by Google Geocoding API
+> Police Stations -- Web scraped from the SacPD website and
+                     geocoded by Google Geocoding API
 > Boundary vector shapefiles
 > School vector shapefiles
 
