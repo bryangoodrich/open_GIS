@@ -7,9 +7,9 @@ loadDB <- function(datafile, dbname = "saccrime.db") {
   # Create crime type based on SimpleCode
   crime_type <- data.frame(
     SimpleCode  = 1:8,
-    Description = c("Homicide", "Assault", "Kidnapping", "Robbery & Arson", 
-                    "Embezzlement & Extortion", "Stolen Vehicle", 
-                    "Stolen or Damanged Property", "Others")
+    Description = c(                   "Homicide",        "Assault", "Kidnapping", "Robbery & Arson", 
+                       "Embezzlement & Extortion", "Stolen Vehicle", 
+                    "Stolen or Damanged Property",         "Others")
   );  #end data.frame
   
   # Police Station data matrix
@@ -69,9 +69,9 @@ loadDB <- function(datafile, dbname = "saccrime.db") {
   
   # ========== Load prepared data into database tables ==========
   # Write the contents of the crime and crime type data to their tables
-  dbWriteTable(con, "crime", crime, append = TRUE)
+  dbWriteTable(con,      "crime",      crime, append = TRUE)
   dbWriteTable(con, "crime_type", crime_type, append = TRUE, row.names = FALSE)
-  dbWriteTable(con, "stations", stations, append = TRUE)
+  dbWriteTable(con,   "stations",   stations, append = TRUE)
   
   
   
