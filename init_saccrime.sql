@@ -6,10 +6,12 @@ SELECT AddGeometryColumn('crime',    'Geometry', 2226, 'POINT', 2);
 SELECT AddGeometryColumn('stations', 'Geometry', 4326, 'POINT', 2);
 
 -- Update tables with new geometry values
+-- EPSG SRID 2226 for California StatePlane Zone 2 (US ft) and 4326 for GRS WGS84 (longlat)
 UPDATE crime    SET Geometry = GeomFromText('POINT(' || X_Coord || ' ' || Y_Coord || ')', 2226);
 UPDATE stations SET Geometry = GeomFromText('POINT(' || lng     || ' ' || lat     || ')', 4326);
 
 -- Load shapefiles
+-- All California agency shapefiles projected in 2226
 .loadshp shapefiles/CITIES               cities    2226
 .loadshp shapefiles/MAIN_RIVERS          rivers    2226
 .loadshp shapefiles/maj_hosp             hospitals 2226
