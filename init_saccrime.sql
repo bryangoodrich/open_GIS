@@ -1,35 +1,24 @@
 -- initialize spatialite extensions to SQLite database
-.read init_spatialite.sql
+.read init_spatialite.sql UTF-8
   
--- Add Geometry column to data tables; make them feature classes
-SELECT AddGeometryColumn('crime',    'Geometry', 2226, 'POINT', 2);
-SELECT AddGeometryColumn('stations', 'Geometry', 4326, 'POINT', 2);
+-- Add SHAPE (geometry) column to data tables; make them feature classes
+SELECT AddGeometryColumn('crime',    'SHAPE', 2226, 'POINT', 2);
+SELECT AddGeometryColumn('stations', 'SHAPE', 4326, 'POINT', 2);
 
--- Update tables with new geometry values
--- EPSG SRID 2226 for California StatePlane Zone 2 (US ft) and 4326 for GRS WGS84 (longlat)
-UPDATE crime    SET Geometry = GeomFromText('POINT(' || X_Coord || ' ' || Y_Coord || ')', 2226);
-UPDATE stations SET Geometry = GeomFromText('POINT(' || lng     || ' ' || lat     || ')', 4326);
+-- Update table SHAPE fields with new geometry values
+UPDATE crime    SET SHAPE = GeomFromText('POINT(' || X_Coord || ' ' || Y_Coord || ')', 2226);
+UPDATE stations SET SHAPE = GeomFromText('POINT(' || lng     || ' ' || lat     || ')', 4326);
 
 -- Load shapefiles
--- All California agency shapefiles projected in 2226
-.loadshp shapefiles/CITIES               cities    2226
-.loadshp shapefiles/MAIN_RIVERS          rivers    2226
-.loadshp shapefiles/maj_hosp             hospitals 2226
-.loadshp shapefiles/MajorRoads           roads     2226
-.loadshp shapefiles/RECREATION           parks     2226
-.loadshp shapefiles/Sac_2010CensusBlkPop blocks    2226
-.loadshp shapefiles/schools              schools   2226
+.loadshp shapefiles/Sac_2010CensusBlkPop blocks    UTF-8 2226 SHAPE
+.loadshp shapefiles/maj_hosp             hospitals UTF-8 2226 SHAPE
+
+--These shapefiles would not load due to invalid data type in dbf?
+-- .loadshp shapefiles/CITIES               cities    UTF-8 2226 SHAPE
+-- .loadshp shapefiles/MAIN_RIVERS          rivers    UTF-8 2226 SHAPE
+-- .loadshp shapefiles/MajorRoads           roads     UTF-8 2226 SHAPE
+-- .loadshp shapefiles/RECREATION           parks     UTF-8 2226 SHAPE
+-- .loadshp shapefiles/schools              schools   UTF-8 2226 SHAPE
 
 -- Add spatial indexes to optimize spatial searches
-SELECT CreateSpatialIndex('crime',     'Geometry');
-SELECT CreateSpatialIndex('stations',  'Geometry');
-SELECT CreateSpatialIndex('cities',    'Geometry');
-SELECT CreateSpatialIndex('rivers',    'Geometry');
-SELECT CreateSpatialIndex('hospitals', 'Geometry');
-SELECT CreateSpatialIndex('roads',     'Geometry');
-SELECT CreateSpatialIndex('parks',     'Geometry');
-SELECT CreateSpatialIndex('blocks',    'Geometry');
-SELECT CreateSpatialIndex('schools',   'Geometry');
-
--- Optimize database when finished
-VACUUM;
+SELECT CreateSpatialIndex('crime', 'SHAPE');
