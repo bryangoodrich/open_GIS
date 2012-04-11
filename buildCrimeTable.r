@@ -23,7 +23,7 @@ buildCrimeTable <- function(filename = "crime") {
 
   crime <- do.call("rbind.data.frame", crime)  # Convert crime list to crime frame
   crime <- unique(crime)                       # Originally duplicates existed; this clears them
-  crime <- crime[crime$X_Coord != 0 |          # Remove points w/o reference location
+  crime <- crime[crime$X_Coord != 0 &          # Remove points w/o reference location
                  crime$Y_Coord != 0, ]         # based on X or Y being 0
   crime <- transform(crime, 
     OccDate = makeDate(OccDate),               # Make Date only in POSIX format SQLite understands
